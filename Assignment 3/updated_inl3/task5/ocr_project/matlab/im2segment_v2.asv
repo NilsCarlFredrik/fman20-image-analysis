@@ -1,0 +1,23 @@
+function S = im2segment_v2(im)
+% S = im2segment(im)
+% A bad test implementation...
+
+m = size(im,1);
+n = size(im,2);
+
+thresh = 42;
+% thresh = adaptthresh(im)
+gauss_im = imfilter(im,fspecial('gaussian'));
+bin_im = gauss_im > thresh;
+
+labels = bwlabel(bin_im);
+nrofsegments = max(max(labels)); % could vary, probably you should estimate this
+% S = cell(1,nrofsegments);
+S = {};
+for i = 1:nrofsegments
+    if nnz(labels == i) > 10
+        segment = labels == i;
+        if any(any(segment)==any(S{end}))
+            S{end} = S{end} 
+    end
+end

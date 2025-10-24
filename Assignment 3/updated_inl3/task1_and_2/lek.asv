@@ -1,0 +1,132 @@
+% 
+% stor = zeros(5*(19+1),5*(19+1));
+% stor(1:19,a*20:(a+1)*20) = 1;
+
+
+
+%% Plot all images
+
+grid_size = [10, 20];
+stor_face = zeros(grid_size(1)*19,grid_size(2)*19);
+
+for i = 1:grid_size(1)
+    for j = 1:grid_size(2)
+        stor_face(1+(i-1)*19:i*19,1+(j-1)*19:j*19) =  reshape(X(:,grid_size(1)*(i-1)+j), [19 19]);
+    end
+end
+
+implot = figure(1);
+implot.Position(3:4) = [1200, 600];
+movegui(implot, 'center')
+imagesc(stor_face)
+
+
+
+%% Plot all images according to classification
+
+X = X;
+klass = Y;
+
+
+grid_size = [10, 10];
+
+stor_face = zeros(grid_size(1)*19,grid_size(2)*19);
+stor_ej_face = zeros(grid_size(1)*19,grid_size(2)*19);
+
+face_count = 0;
+ej_face_count = 0;
+
+for k = 1:200
+    if klass(k) == 1
+        i = 1 + fix(face_count/10);
+        j = 1 + mod(face_count,10);
+        stor_face(1+(i-1)*19:i*19,1+(j-1)*19:j*19) =  reshape(X(:,k), [19 19]);
+        face_count = face_count + 1; 
+    end
+    if klass(k) == -1 
+        i = 1 + fix(ej_face_count/10);
+        j = 1 + mod(ej_face_count,10);
+        stor_ej_face(1+(i-1)*19:i*19,1+(j-1)*19:j*19) =  reshape(X(:,k), [19 19]);
+        ej_face_count = ej_face_count + 1; 
+    end
+end
+
+face_plot = figure(2);
+face_plot.Position(3:4) = [600, 600];
+movegui(face_plot, 'west')
+imagesc(stor_face)
+
+ej_face_plot = figure(3);
+ej_face_plot.Position(3:4) = [600, 600];
+movegui(ej_face_plot, 'east')
+imagesc(stor_ej_face)
+
+
+%% Plot all images according to classification after training
+
+X = X_test;
+klass = predictions_test';
+
+len_X = size(X);
+
+grid_size = [5, 8];
+
+stor_face = zeros(grid_size(1)*19,grid_size(2)*19);
+stor_ej_face = zeros(grid_size(1)*19,grid_size(2)*19);
+
+face_count = 0;
+ej_face_count = 0;
+
+for k = 1:len_X(2)
+    if klass(k) == 1
+        i = 1 + fix(face_count/10);
+        j = 1 + mod(face_count,10);
+        stor_face(1+(i-1)*19:i*19,1+(j-1)*19:j*19) =  reshape(X(:,k), [19 19]);
+        face_count = face_count + 1; 
+    end
+    if klass(k) == -1 
+        i = 1 + fix(ej_face_count/10);
+        j = 1 + mod(ej_face_count,10);
+        stor_ej_face(1+(i-1)*19:i*19,1+(j-1)*19:j*19) =  reshape(X(:,k), [19 19]);
+        ej_face_count = ej_face_count + 1; 
+    end
+end
+
+face_plot = figure(4+tjo);
+face_plot.Position(3:4) = [600, 600];
+movegui(face_plot, 'west')
+imagesc(stor_face)
+
+ej_face_plot = figure(5+tjo);
+ej_face_plot.Position(3:4) = [600, 600];
+movegui(ej_face_plot, 'east')
+imagesc(stor_ej_face)
+
+klass = Y_test;
+
+end
+
+
+%% True/false positive/negative
+
+r = Y_test;
+p = predictions_test;
+
+pos = ones(size(r))
+neg = -ones(size(r))
+
+
+tp = nnz([r p]==[pos pos])
+tn = nnz([r p]==[neg neg])
+fp = nnz([r p]==[neg pos])
+fn = nnz([r p]==[pos neg])
+
+
+
+
+
+
+
+
+
+

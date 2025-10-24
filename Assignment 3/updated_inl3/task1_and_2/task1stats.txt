@@ -1,0 +1,6 @@
+ Model:                   Own nn      Own Bayes      Tree         SVM        NN         
+ Mean train err:          0           0.0115         0            0          0          
+ Mean train err:          0.1565      0.16975        0.15525      0.045      0.1565     
+ Face prediction:         1           1              1            1          1          
+ Non-face prediction      -1          -1             -1           -1         -1         
+diary off
